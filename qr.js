@@ -29,19 +29,24 @@ QRCode.toCanvas(canvas, qrtext, function (error) {
 
 
 function checkValid(){
+  chrome.storage.local.get('token', (result)=>{
+    if (result.token){
+      clearInterval(timer);
+    }else{
   client
   .mutate({
     mutation: gql`
     mutation{
-      authenticateQRCode(input:{key:"${current_uuid}"}) {
+      authenticateQRCode(input:{qrCodeType:CHROME_EXTENSION_LOGIN_REQUEST,key:"${current_uuid}"}) {
         token
       }
     }
-    `
+    `,
+    errorPolicy:"all"
   })
-  .then(result => {chrome.storage.local.set({'token':result.authenticateQRCode.token}); valid=true });
+  .then(result => {chrome.storage.local.set({'token':result.authenticateQRCode.token}); }).catch(err=>{console.log(err)});
 }
+})}
+  
 
-while (!valid){
-  checkValid()
-}
+const timer = setInterval(checkValid, 3000)  

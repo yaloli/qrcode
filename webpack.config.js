@@ -1,9 +1,9 @@
 
 module.exports = {
 
-	entry: './QR.js',
+	entry: './qr.js',
     	output: { 
-    		path: 'c://Users/shp05/OneDrive/바탕 화면/새 폴더/QR',
+    		path: '/Users/kodongwoo/Documents/qrcode',
                 filename: 'bundle.js'
     	
         }
